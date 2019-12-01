@@ -1,11 +1,18 @@
 import React from 'react'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import styled from 'styled-components'
 
-function Loading() {
-  return (
-    <div>
-      <h1>Loading...</h1>
-    </div>
-  )
-}
+const Container = styled.div`
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+`
+
+const Loading = () => (
+  <Container>
+    <CircularProgress />
+  </Container>
+)
 
 export default Loading

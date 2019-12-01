@@ -5,7 +5,6 @@ const Auth = ({ user }) => (
   <Route
     render={({ location }) => {
       if (!user && location.pathname !== '/login') {
-        console.log('redirect')
         return <Redirect to="/login" />
       }
     }}

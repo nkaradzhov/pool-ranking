@@ -1,4 +1,5 @@
 import React from 'react'
+import RecordButton from './components/RecordButton'
 import app from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
@@ -13,9 +14,23 @@ import RecordGame from './Dashboard/RecordGame'
 import GameHistory from './GameHistory'
 import Auth from './Authentication/Auth'
 import Navigation from './components/Navigation'
+import styled from 'styled-components'
 
 const firebaseApp = app.initializeApp(config)
 window.store = firebaseApp.firestore()
+
+const Root = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100vh;
+`
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: scroll;
+`
 
 const App = () => {
   const [user, loading] = useAuthState(firebaseApp.auth())
@@ -23,21 +38,30 @@ const App = () => {
   if (loading) return <Loading />
 
   return (
-    <Router>
-      <Auth user={user} />
-      <Switch>
-        <Route path="/login" exact component={Login} />
+    <Root>
+      <Router>
+        <Content>
+          <Auth user={user} />
+          <Switch>
+            <Route path="/login" exact component={Login} />
+            {user && (
+              <React.Fragment>
+                <Route path="/" exact component={Home} />
+                <Route exact path="/leaderboard" component={Leaderboard} />
+                <Route exact path="/record" component={RecordGame} />
+                <Route exact path="/history" component={GameHistory} />
+              </React.Fragment>
+            )}
+          </Switch>
+        </Content>
         {user && (
           <React.Fragment>
-            <Route path="/" exact component={Home} />
-            <Route exact path="/leaderboard" component={Leaderboard} />
-            <Route exact path="/record" component={RecordGame} />
-            <Route exact path="/history" component={GameHistory} />
+            <RecordButton />
+            <Navigation />
           </React.Fragment>
         )}
-      </Switch>
-      <Navigation />
-    </Router>
+      </Router>
+    </Root>
   )
 }
 

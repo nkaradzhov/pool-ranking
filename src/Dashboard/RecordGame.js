@@ -4,6 +4,34 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Loader from '../components/Loading'
 import { calculateRankings } from '../util/elo'
+import {
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  Dialog,
+  Button,
+  Divider
+} from '@material-ui/core'
+
+import styled from 'styled-components'
+
+const DialogContent = styled.div`
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 2rem;
+  justify-content: space-evenly;
+  align-items: stretch;
+`
+
+const DialogHeader = styled.div`
+  display: flex;
+  padding: 1rem 2rem;
+  justify-content: center;
+  align-items: center;
+`
 
 const RecordGame = () => {
   const [authUser, loadingUser] = useAuthState(auth())
@@ -31,11 +59,13 @@ const RecordGame = () => {
     )
 
     winnerRef.update({
-      rank: newWinnerRank
+      rank: newWinnerRank,
+      delta: newWinnerRank - winner.rank
     })
 
     looserRef.update({
-      rank: newLooserRank
+      rank: newLooserRank,
+      delta: newLooserRank - looser.rank
     })
 
     firestore()
@@ -45,26 +75,54 @@ const RecordGame = () => {
         looser: looser.displayName,
         date: Date.now()
       })
+
+    setOponent(false)
   }
 
   if (loadingUser || loadingUsers) return <Loader />
+
   return (
     <div>
       <h1>Who did you play against?</h1>
-      <ul>
+
+      <List>
         {users
           .filter(u => u.uid !== authUser.uid)
-          .map((u, i) => (
-            <li onClick={() => setOponent(u)} key={i}>
-              {u.displayName}
-            </li>
+          .map((user, i) => (
+            <ListItem key={i} onClick={() => setOponent(user)}>
+              <ListItemAvatar>
+                <Avatar src={user.photoUrl} />
+              </ListItemAvatar>
+              <ListItemText primary={user.displayName} />
+            </ListItem>
           ))}
-      </ul>
+      </List>
       {oponent && (
-        <React.Fragment>
-          <button onClick={() => doRecordGame(true)}>won</button>
-          <button onClick={() => doRecordGame(false)}>lost</button>
-        </React.Fragment>
+        <Dialog open={!!oponent} onClose={() => setOponent(null)}>
+          <DialogHeader>
+            <Avatar src={authUser.providerData[0].photoURL} />
+
+            <strong style={{ margin: '0 2rem' }}>-</strong>
+            <Avatar src={oponent.photoUrl} />
+            <Divider />
+          </DialogHeader>
+          <DialogContent>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => doRecordGame(true)}
+            >
+              I WON
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => doRecordGame(false)}
+            >
+              I LOST
+            </Button>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   )
