@@ -19,18 +19,32 @@ import RecordGame from './Dashboard/RecordGame'
 const firebaseApp = app.initializeApp(config)
 window.store = firebaseApp.firestore()
 
-function App() {
+const App = () => {
   const [user, loading] = useAuthState(firebaseApp.auth())
 
   if (loading) return <Loading />
+
   return (
     <Router>
-      {!user && <Redirect to={'/login'} />}
+      <Route
+        render={({ location }) => {
+          console.log(!user)
+          console.log(location.pathname)
+          if (!user && location.pathname !== '/login') {
+            console.log('redirect')
+            return <Redirect to="/login" />
+          }
+        }}
+      />
       <Switch>
         <Route path="/login" exact component={Login} />
-        <Route path="/" exact component={Home} />
-        <Route exact path="/leaderboard" component={Leaderboard} />
-        <Route exact path="/record" component={RecordGame} />
+        {user && (
+          <React.Fragment>
+            <Route path="/" exact component={Home} />
+            <Route exact path="/leaderboard" component={Leaderboard} />
+            <Route exact path="/record" component={RecordGame} />
+          </React.Fragment>
+        )}
       </Switch>
     </Router>
   )

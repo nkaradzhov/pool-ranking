@@ -10,8 +10,8 @@ const Home = () => {
   const [user] = useAuthState(auth())
   const [userInfo, loading] = useDocument(firestore().doc(`users/${user.uid}`))
 
-  const enroll = async () => {
-    const r = await firestore()
+  const enroll = () => {
+    firestore()
       .collection('users')
       .doc(user.uid)
       .set({
