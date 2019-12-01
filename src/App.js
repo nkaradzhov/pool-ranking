@@ -4,17 +4,13 @@ import 'firebase/auth'
 import 'firebase/firestore'
 import config from './firebaseConfig'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Loading from './components/Loading'
 import Login from './Authentication/Login'
 import Home from './Dashboard/Home'
 import Leaderboard from './Dashboard/Leaderboard'
 import RecordGame from './Dashboard/RecordGame'
+import Auth from './Authentication/Auth'
 
 const firebaseApp = app.initializeApp(config)
 window.store = firebaseApp.firestore()
@@ -26,16 +22,7 @@ const App = () => {
 
   return (
     <Router>
-      <Route
-        render={({ location }) => {
-          console.log(!user)
-          console.log(location.pathname)
-          if (!user && location.pathname !== '/login') {
-            console.log('redirect')
-            return <Redirect to="/login" />
-          }
-        }}
-      />
+      <Auth user={user} />
       <Switch>
         <Route path="/login" exact component={Login} />
         {user && (
