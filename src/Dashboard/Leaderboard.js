@@ -9,10 +9,10 @@ const Leaderboard = () => {
   return (
     <ul>
       {users
-        .sort((r1, r2) => r2.rating - r1.rating)
+        .sort((r1, r2) => r2.rank - r1.rank)
         .map((user, i) => (
           <li key={i}>
-            {user.displayName} {user.rating}
+            {user.displayName} {user.rank}
           </li>
         ))}
     </ul>

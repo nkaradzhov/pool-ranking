@@ -10,7 +10,9 @@ import Login from './Authentication/Login'
 import Home from './Dashboard/Home'
 import Leaderboard from './Dashboard/Leaderboard'
 import RecordGame from './Dashboard/RecordGame'
+import GameHistory from './GameHistory'
 import Auth from './Authentication/Auth'
+import Navigation from './components/Navigation'
 
 const firebaseApp = app.initializeApp(config)
 window.store = firebaseApp.firestore()
@@ -30,9 +32,11 @@ const App = () => {
             <Route path="/" exact component={Home} />
             <Route exact path="/leaderboard" component={Leaderboard} />
             <Route exact path="/record" component={RecordGame} />
+            <Route exact path="/history" component={GameHistory} />
           </React.Fragment>
         )}
       </Switch>
+      <Navigation />
     </Router>
   )
 }

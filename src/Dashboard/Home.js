@@ -3,6 +3,7 @@ import { auth, firestore } from 'firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useDocument } from 'react-firebase-hooks/firestore'
 import { Link } from 'react-router-dom'
+import Loading from '../components/Loading'
 
 const exist = doc => doc && doc.exists
 
@@ -15,21 +16,21 @@ const Home = () => {
       .collection('users')
       .doc(user.uid)
       .set({
-        rating: 1200,
+        rank: 1200,
         displayName: user.providerData[0].displayName,
         email: user.providerData[0].email,
         photoUrl: user.providerData[0].photoURL,
         uid: user.uid
       })
   }
+  if (loading) return <Loading />
   return (
     <div>
       <h1>{user.displayName}</h1>
-      {!exist(userInfo) && <button onClick={enroll}>enroll</button>}
-      {exist(userInfo) && <h1>Rating: {userInfo.data().rating}</h1>}
 
-      <Link to="/leaderboard">Leaderboard</Link>
-      <Link to="/record">Record game</Link>
+      {!exist(userInfo) && <button onClick={enroll}>enroll</button>}
+
+      {exist(userInfo) && <h1>Rank: {userInfo.data().rank}</h1>}
     </div>
   )
 }

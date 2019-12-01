@@ -14,36 +14,37 @@ const RecordGame = () => {
   const [oponent, setOponent] = useState(null)
 
   const doRecordGame = async won => {
-    const currentUserRef = firestore()
+    const winnerRef = firestore()
       .collection('users')
-      .doc(authUser.uid)
-    const oponentRef = firestore()
+      .doc(won ? authUser.uid : oponent.uid)
+
+    const looserRef = firestore()
       .collection('users')
-      .doc(oponent.uid)
+      .doc(won ? oponent.uid : authUser.uid)
 
-    const myRating = (await currentUserRef.get()).data().rating
-    const oponentRating = (await oponentRef.get()).data().rating
+    const winner = (await winnerRef.get()).data()
+    const looser = (await looserRef.get()).data()
 
-    let myNewRanking
-    let newOponentRanking
-    if (won) {
-      ;[myNewRanking, newOponentRanking] = calculateRankings(
-        myRating,
-        oponentRating
-      )
-    } else {
-      ;[newOponentRanking, myNewRanking] = calculateRankings(
-        oponentRating,
-        myRating
-      )
-    }
+    const [newWinnerRank, newLooserRank] = calculateRankings(
+      winner.rank,
+      looser.rank
+    )
 
-    currentUserRef.update({
-      rating: myNewRanking
+    winnerRef.update({
+      rank: newWinnerRank
     })
-    oponentRef.update({
-      rating: newOponentRanking
+
+    looserRef.update({
+      rank: newLooserRank
     })
+
+    firestore()
+      .collection('games')
+      .add({
+        winner: winner.displayName,
+        looser: looser.displayName,
+        date: Date.now()
+      })
   }
 
   if (loadingUser || loadingUsers) return <Loader />
