@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { firestore } from 'firebase'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import Loader from './components/Loading'
@@ -7,15 +7,21 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 
-const chronologically = (g1, g2) => g2.date - g1.date
-
 const GameHistory = () => {
-  const [games, loading] = useCollectionData(firestore().collection('games'))
+  const [yesterday] = useState(Date.now() - 24 * 60 * 60 * 1000)
+  const [games, loading] = useCollectionData(
+    firestore()
+      .collection('games')
+      .where('date', '>', yesterday)
+      .orderBy('date', 'desc')
+  )
+
   if (loading) return <Loader />
+
   return (
     <Table>
       <TableHead>
-        {games.sort(chronologically).map((game, i) => (
+        {games.map((game, i) => (
           <TableRow key={i}>
             <TableCell>{game.winner}</TableCell>
             <TableCell>{game.looser}</TableCell>
@@ -23,9 +29,6 @@ const GameHistory = () => {
         ))}
       </TableHead>
     </Table>
-
-    // <List>
-    // </List>
   )
 }
 
