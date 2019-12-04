@@ -41,9 +41,13 @@ const Home = () => {
   return (
     <Container>
       {!userInfo && <button onClick={enroll}>enroll</button>}
-      <ProfilePic src={userInfo.photoUrl} />
-      <h3>{userInfo.displayName}</h3>
-      {userInfo && <h1>{parseInt(userInfo.rank)}</h1>}
+      {userInfo && (
+        <React.Fragment>
+          <ProfilePic src={userInfo.photoUrl} />
+          <h3>{userInfo.displayName}</h3>
+          <h1>{parseInt(userInfo.rank)}</h1>
+        </React.Fragment>
+      )}
     </Container>
   )
 }
