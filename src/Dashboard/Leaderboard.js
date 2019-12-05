@@ -22,29 +22,31 @@ const Delta = ({ delta }) => (
 )
 
 const Leaderboard = () => {
-  const [users, loading] = useCollectionData(firestore().collection('users'))
+  const [users, loading] = useCollectionData(
+    firestore()
+      .collection('users')
+      .orderBy('rank', 'desc')
+  )
   if (loading) return <Loader />
   return (
     <List>
-      {users
-        .sort((r1, r2) => r2.rank - r1.rank)
-        .map((user, i) => (
-          <ListItem key={i}>
-            <ListItemAvatar>
-              <Avatar src={user.photoUrl} />
-            </ListItemAvatar>
-            <ListItemText primary={user.displayName} />
-            <ListItemSecondaryAction
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-end'
-              }}
-            >
-              <strong>{parseInt(user.rank)}</strong>
-              <Delta delta={user.delta} />
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
+      {users.map((user, i) => (
+        <ListItem key={i}>
+          <ListItemAvatar>
+            <Avatar src={user.photoUrl} />
+          </ListItemAvatar>
+          <ListItemText primary={user.displayName} />
+          <ListItemSecondaryAction
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end'
+            }}
+          >
+            <strong>{parseInt(user.rank)}</strong>
+            <Delta delta={user.delta} />
+          </ListItemSecondaryAction>
+        </ListItem>
+      ))}
     </List>
   )
 }
