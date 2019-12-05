@@ -86,10 +86,10 @@ const RecordGame = () => {
   if (loadingUser || loadingUsers) return <Loader />
 
   return (
-    <div>
+    <React.Fragment>
       <h1>Who did you play against?</h1>
 
-      <List>
+      <List style={{ overflow: 'scroll' }}>
         {users
           .filter(u => u.uid !== authUser.uid)
           .map((user, i) => (
@@ -128,7 +128,7 @@ const RecordGame = () => {
           </DialogContent>
         </Dialog>
       )}
-    </div>
+    </React.Fragment>
   )
 }
 
