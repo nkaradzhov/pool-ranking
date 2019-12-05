@@ -19,6 +19,11 @@ const ProfilePic = styled(Avatar)`
   height: 80px !important;
 `
 
+const Label = styled.span`
+  font-size: 0.8em;
+  color: #444343;
+`
+
 const Home = () => {
   const [user] = useAuthState(auth())
   const [userInfo, loading] = useDocumentData(
@@ -45,7 +50,16 @@ const Home = () => {
         <React.Fragment>
           <ProfilePic src={userInfo.photoUrl} />
           <h3>{userInfo.displayName}</h3>
-          <h1>{parseInt(userInfo.rank)}</h1>
+          <h1>
+            <Label>SKILL:</Label> {parseInt(userInfo.rank)}
+          </h1>
+          <h2>
+            <Label>W/L RATIO:</Label>{' '}
+            {(userInfo.gamesWon / userInfo.gamesLost).toFixed(2)}
+          </h2>
+          <h2>
+            <Label>GAMES PLAYED:</Label> {userInfo.gamesPlayed}
+          </h2>
         </React.Fragment>
       )}
     </Container>

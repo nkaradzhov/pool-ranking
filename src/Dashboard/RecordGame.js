@@ -60,12 +60,16 @@ const RecordGame = () => {
 
     winnerRef.update({
       rank: newWinnerRank,
-      delta: newWinnerRank - winner.rank
+      delta: newWinnerRank - winner.rank,
+      gamesPlayed: winner.gamesPlayed + 1,
+      gamesWon: winner.gamesWon + 1
     })
 
     looserRef.update({
       rank: newLooserRank,
-      delta: newLooserRank - looser.rank
+      delta: newLooserRank - looser.rank,
+      gamesPlayed: looser.gamesPlayed + 1,
+      gamesLost: looser.gamesLost + 1
     })
 
     firestore()
