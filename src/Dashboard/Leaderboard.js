@@ -10,6 +10,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Avatar from '@material-ui/core/Avatar'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemSecondaryAction from '@material-ui/core/ListItemText'
+import Header from '../components/Header'
 
 const Delta = ({ delta }) => (
   <small
@@ -31,25 +32,31 @@ const Leaderboard = () => {
   const history = useHistory()
   if (loading) return <Loader />
   return (
-    <List>
-      {users.map((user, i) => (
-        <ListItem key={i} onClick={() => history.push(`/profile/${user.uid}`)}>
-          <ListItemAvatar>
-            <Avatar src={user.photoUrl} />
-          </ListItemAvatar>
-          <ListItemText primary={user.displayName} />
-          <ListItemSecondaryAction
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end'
-            }}
+    <React.Fragment>
+      <Header title="LEADERBOARD" />
+      <List style={{ overflow: 'scroll' }}>
+        {users.map((user, i) => (
+          <ListItem
+            key={i}
+            onClick={() => history.push(`/profile/${user.uid}`)}
           >
-            <strong>{parseInt(user.rank)}</strong>
-            <Delta delta={user.delta} />
-          </ListItemSecondaryAction>
-        </ListItem>
-      ))}
-    </List>
+            <ListItemAvatar>
+              <Avatar src={user.photoUrl} />
+            </ListItemAvatar>
+            <ListItemText primary={user.displayName} />
+            <ListItemSecondaryAction
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end'
+              }}
+            >
+              <strong>{parseInt(user.rank)}</strong>
+              <Delta delta={user.delta} />
+            </ListItemSecondaryAction>
+          </ListItem>
+        ))}
+      </List>
+    </React.Fragment>
   )
 }
 

@@ -6,6 +6,7 @@ import Table from '@material-ui/core/Table'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
+import Header from './components/Header'
 
 const GameHistory = () => {
   const [yesterday] = useState(Date.now() - 24 * 60 * 60 * 1000)
@@ -19,16 +20,19 @@ const GameHistory = () => {
   if (loading) return <Loader />
 
   return (
-    <Table>
-      <TableHead>
-        {games.map((game, i) => (
-          <TableRow key={i}>
-            <TableCell>{game.winner}</TableCell>
-            <TableCell>{game.looser}</TableCell>
-          </TableRow>
-        ))}
-      </TableHead>
-    </Table>
+    <React.Fragment>
+      <Header title="GAME HISTORY" />
+      <Table style={{ overflow: 'scroll', display: 'flex' }}>
+        <TableHead>
+          {games.map((game, i) => (
+            <TableRow key={i}>
+              <TableCell>{game.winner}</TableCell>
+              <TableCell>{game.looser}</TableCell>
+            </TableRow>
+          ))}
+        </TableHead>
+      </Table>
+    </React.Fragment>
   )
 }
 

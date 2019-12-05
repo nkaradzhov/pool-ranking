@@ -30,7 +30,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow: scroll;
+  overflow: hidden;
 `
 
 const App = () => {

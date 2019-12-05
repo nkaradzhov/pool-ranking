@@ -8,8 +8,6 @@ import { useLocation, useHistory } from 'react-router-dom'
 import HistoryIcon from '@material-ui/icons/History'
 
 const Container = styled.div`
-  position: absolute;
-  bottom: 0;
   width: 100vw;
   display: flex;
   flex-direction: column;
