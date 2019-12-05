@@ -3,26 +3,9 @@ import { auth, firestore } from 'firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import Loading from '../components/Loading'
-import Avatar from '@material-ui/core/Avatar'
-import styled from 'styled-components'
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  flex: 1;
-`
-
-const ProfilePic = styled(Avatar)`
-  width: 80px !important;
-  height: 80px !important;
-`
-
-const Label = styled.span`
-  font-size: 0.8em;
-  color: #444343;
-`
+import { Button } from '@material-ui/core'
+import UserInfo from '../components/UserInfo'
+import Page from '../components/Page'
 
 const Home = () => {
   const [user] = useAuthState(auth())
@@ -47,25 +30,17 @@ const Home = () => {
   }
   if (loading) return <Loading />
   return (
-    <Container>
-      {!userInfo && <button onClick={enroll}>enroll</button>}
-      {userInfo && (
+    <Page>
+      {!userInfo && (
         <React.Fragment>
-          <ProfilePic src={userInfo.photoUrl} />
-          <h3>{userInfo.displayName}</h3>
-          <h1>
-            <Label>SKILL:</Label> {parseInt(userInfo.rank)}
-          </h1>
-          <h2>
-            <Label>W/L RATIO:</Label>{' '}
-            {(userInfo.gamesWon / userInfo.gamesLost).toFixed(2)}
-          </h2>
-          <h2>
-            <Label>GAMES PLAYED:</Label> {userInfo.gamesPlayed}
-          </h2>
+          <h1>Join our local pool league!</h1>
+          <Button onClick={enroll} variant="contained" color="primary">
+            ENROLL
+          </Button>
         </React.Fragment>
       )}
-    </Container>
+      {userInfo && <UserInfo info={userInfo} />}
+    </Page>
   )
 }
 

@@ -11,6 +11,7 @@ import Login from './Authentication/Login'
 import Home from './Dashboard/Home'
 import Leaderboard from './Dashboard/Leaderboard'
 import RecordGame from './Dashboard/RecordGame'
+import Profile from './Dashboard/Profile'
 import GameHistory from './GameHistory'
 import Auth from './Authentication/Auth'
 import Navigation from './components/Navigation'
@@ -50,6 +51,7 @@ const App = () => {
                 <Route exact path="/leaderboard" component={Leaderboard} />
                 <Route exact path="/record" component={RecordGame} />
                 <Route exact path="/history" component={GameHistory} />
+                <Route exact path="/profile/:id" component={Profile} />
               </React.Fragment>
             )}
           </Switch>

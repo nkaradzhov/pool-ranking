@@ -1,6 +1,7 @@
 import React from 'react'
 import { firestore } from 'firebase'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { useHistory } from 'react-router-dom'
 import Loader from '../components/Loading'
 
 import List from '@material-ui/core/List'
@@ -27,11 +28,12 @@ const Leaderboard = () => {
       .collection('users')
       .orderBy('rank', 'desc')
   )
+  const history = useHistory()
   if (loading) return <Loader />
   return (
     <List>
       {users.map((user, i) => (
-        <ListItem key={i}>
+        <ListItem key={i} onClick={() => history.push(`/profile/${user.uid}`)}>
           <ListItemAvatar>
             <Avatar src={user.photoUrl} />
           </ListItemAvatar>
