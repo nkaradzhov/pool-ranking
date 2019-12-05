@@ -40,7 +40,7 @@ const Home = () => {
   if (loading) return <Loading />
   return (
     <React.Fragment>
-      <Header title="HOME" />
+      <Header title={userInfo ? userInfo.displayName : ''} />
       <Page>
         {!userInfo && (
           <React.Fragment>

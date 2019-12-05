@@ -4,6 +4,8 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Loader from '../components/Loading'
 import { calculateRankings } from '../util/elo'
+import ArrowBack from '@material-ui/icons/ArrowBack'
+import { useHistory } from 'react-router-dom'
 import {
   List,
   ListItem,
@@ -16,6 +18,7 @@ import {
 } from '@material-ui/core'
 
 import styled from 'styled-components'
+import Header from '../components/Header'
 
 const DialogContent = styled.div`
   height: 150px;
@@ -38,8 +41,8 @@ const RecordGame = () => {
   const [users, loadingUsers] = useCollectionData(
     firestore().collection('users')
   )
-
   const [oponent, setOponent] = useState(null)
+  const history = useHistory()
 
   const doRecordGame = async won => {
     const winnerRef = firestore()
@@ -87,17 +90,24 @@ const RecordGame = () => {
 
   return (
     <React.Fragment>
-      <h1>Who did you play against?</h1>
-
+      <Header
+        title="Record"
+        left={() => <ArrowBack onClick={() => history.goBack()} />}
+      />
       <List style={{ overflow: 'scroll' }}>
         {users
           .filter(u => u.uid !== authUser.uid)
-          .map((user, i) => (
-            <ListItem key={i} onClick={() => setOponent(user)}>
+          .map(user => (
+            <ListItem
+              key={user.uid}
+              selected={oponent && oponent.uid == user.uid}
+              onClick={() => setOponent(user)}
+            >
               <ListItemAvatar>
                 <Avatar src={user.photoUrl} />
               </ListItemAvatar>
-              <ListItemText primary={user.displayName} />
+              <strong style={{ fontSize: '0.8em' }}>{user.displayName}</strong>
+              {/* <ListItemText primary= /> */}
             </ListItem>
           ))}
       </List>
@@ -111,20 +121,25 @@ const RecordGame = () => {
             <Divider />
           </DialogHeader>
           <DialogContent>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => doRecordGame(true)}
-            >
-              I WON
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => doRecordGame(false)}
-            >
-              I LOST
-            </Button>
+            <React.Fragment>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => doRecordGame(true)}
+              >
+                I WON
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => doRecordGame(false)}
+              >
+                I LOST
+              </Button>
+              {/* <Button variant="outlined" onClick={() => setOponent(null)}>
+                CANCEL
+              </Button> */}
+            </React.Fragment>
           </DialogContent>
         </Dialog>
       )}

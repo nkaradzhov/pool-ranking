@@ -3,20 +3,35 @@ import { firestore } from 'firebase'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useHistory } from 'react-router-dom'
 import Loader from '../components/Loading'
-
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Avatar from '@material-ui/core/Avatar'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItemSecondaryAction from '@material-ui/core/ListItemText'
 import Header from '../components/Header'
+import { Table, TableBody, TableRow, TableCell } from '@material-ui/core'
+import ScrollablePaper from '../components/ScrollablePaper'
+import green from '@material-ui/core/colors/green'
+import red from '@material-ui/core/colors/red'
+import grey from '@material-ui/core/colors/grey'
+
+const scale = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] //9
+
+const getBackgroundColor = rank => {
+  return ''
+  const step = 50
+  const diff = rank - 1200
+
+  let steps = Math.abs(parseInt(diff / step))
+  if (steps > 9) steps = 9
+
+  const color = diff >= 0 ? green : red
+  return color[scale[steps]]
+}
 
 const Delta = ({ delta }) => (
   <small
     style={{
       marginLeft: '.2rem',
-      color: delta < 0 ? 'red' : 'green'
+      fontSize: '0.7em',
+      color: delta < 0 ? red[500] : green[500]
+      // color: grey[700]
     }}
   >
     {`( ${delta > 0 ? '+' : ''}${delta | 0} )`}
@@ -33,29 +48,34 @@ const Leaderboard = () => {
   if (loading) return <Loader />
   return (
     <React.Fragment>
-      <Header title="LEADERBOARD" />
-      <List style={{ overflow: 'scroll' }}>
-        {users.map((user, i) => (
-          <ListItem
-            key={i}
-            onClick={() => history.push(`/profile/${user.uid}`)}
-          >
-            <ListItemAvatar>
-              <Avatar src={user.photoUrl} />
-            </ListItemAvatar>
-            <ListItemText primary={user.displayName} />
-            <ListItemSecondaryAction
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-end'
-              }}
-            >
-              <strong>{parseInt(user.rank)}</strong>
-              <Delta delta={user.delta} />
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
-      </List>
+      <Header title="Leaderboard" />
+      <ScrollablePaper>
+        <Table size="small">
+          <TableBody>
+            {users.map((user, i) => (
+              <TableRow
+                key={user.uid}
+                onClick={() => history.push(`/profile/${user.uid}`)}
+                style={{ backgroundColor: getBackgroundColor(user.rank) }}
+              >
+                <TableCell style={{ paddingRight: 0 }}>
+                  <Avatar src={user.photoUrl} />
+                </TableCell>
+                <TableCell colSpan={2}>
+                  <strong>
+                    {i + 1}. {user.displayName}
+                  </strong>
+                </TableCell>
+                <TableCell>
+                  <strong>{parseInt(user.rank)}</strong>
+                  <br />
+                  <Delta delta={user.delta} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </ScrollablePaper>
     </React.Fragment>
   )
 }

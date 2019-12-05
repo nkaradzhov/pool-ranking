@@ -5,7 +5,6 @@ import { useDocumentDataOnce } from 'react-firebase-hooks/firestore'
 import { firestore } from 'firebase'
 import UserInfo from '../components/UserInfo'
 import styled from 'styled-components'
-import Toolbar from '@material-ui/core/Toolbar'
 import ArrowBack from '@material-ui/icons/ArrowBack'
 import { useHistory } from 'react-router-dom'
 import Header from '../components/Header'
@@ -31,7 +30,7 @@ const Profile = () => {
     <React.Fragment>
       <Header
         left={() => <ArrowBack onClick={() => history.goBack()} />}
-        title="PROFILE"
+        title={user.displayName}
       />
       <Page>
         <UserInfo info={user} />

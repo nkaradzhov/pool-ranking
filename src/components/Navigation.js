@@ -25,7 +25,7 @@ const Navigation = () => {
         }}
       >
         <BottomNavigationAction
-          label="Dashboard"
+          label="Home"
           value="/"
           icon={<AccountCircleIcon />}
         />

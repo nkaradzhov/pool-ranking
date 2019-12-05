@@ -12,10 +12,9 @@ const Label = styled.span`
   color: #444343;
 `
 
-const UserInfo = ({ info, showBack }) => (
+const UserInfo = ({ info }) => (
   <React.Fragment>
     <ProfilePic src={info.photoUrl} />
-    <h3>{info.displayName}</h3>
     <h1>
       <Label>SKILL:</Label> {parseInt(info.rank)}
     </h1>

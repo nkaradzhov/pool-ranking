@@ -9,11 +9,12 @@ const RecordButton = styled(Fab)`
   bottom: 4.3rem !important;
   right: 1.3rem !important;
 `
+const isBlackList = pathname => !['/leaderboard', '/history'].includes(pathname)
 
 export default () => {
   const history = useHistory()
   const { pathname } = useLocation()
-  if (pathname === '/record') return null
+  if (isBlackList(pathname)) return null
   return (
     <RecordButton onClick={() => history.push('/record')} color="primary">
       <AddIcon />
