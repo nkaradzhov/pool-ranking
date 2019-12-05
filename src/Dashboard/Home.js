@@ -39,7 +39,10 @@ const Home = () => {
         displayName: user.providerData[0].displayName,
         email: user.providerData[0].email,
         photoUrl: user.providerData[0].photoURL,
-        uid: user.uid
+        uid: user.uid,
+        gamesLost: 0,
+        gamesPlayed: 0,
+        gamesWon: 0
       })
   }
   if (loading) return <Loading />
