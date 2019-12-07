@@ -1,5 +1,5 @@
 import React from 'react'
-import { Toolbar, AppBar, Typography } from '@material-ui/core'
+import { Toolbar, AppBar } from '@material-ui/core'
 import styled from 'styled-components'
 
 const Left = styled.div`
@@ -19,9 +19,7 @@ const Header = ({ left, title, right }) => {
     <AppBar position="static">
       <Toolbar>
         <Left>{left && left()}</Left>
-        <Middle>
-          <Typography variant="h7">{title}</Typography>
-        </Middle>
+        <Middle>{title}</Middle>
         <Right>{right && right()}</Right>
       </Toolbar>
     </AppBar>
