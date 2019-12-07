@@ -6,6 +6,7 @@ const Left = styled.div`
   flex: 1;
 `
 const Middle = styled.div`
+  font-weight: bold;
   display: flex;
   flex: 4;
   justify-content: center;
