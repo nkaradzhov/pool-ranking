@@ -99,6 +99,7 @@ const RecordGame = () => {
           .filter(u => u.uid !== authUser.uid)
           .map(user => (
             <ListItem
+              divider
               key={user.uid}
               selected={oponent && oponent.uid == user.uid}
               onClick={() => setOponent(user)}
@@ -106,8 +107,7 @@ const RecordGame = () => {
               <ListItemAvatar>
                 <Avatar src={user.photoUrl} />
               </ListItemAvatar>
-              <strong style={{ fontSize: '0.8em' }}>{user.displayName}</strong>
-              {/* <ListItemText primary= /> */}
+              <ListItemText primary={<strong>{user.displayName}</strong>} />
             </ListItem>
           ))}
       </List>
@@ -136,9 +136,6 @@ const RecordGame = () => {
               >
                 I LOST
               </Button>
-              {/* <Button variant="outlined" onClick={() => setOponent(null)}>
-                CANCEL
-              </Button> */}
             </React.Fragment>
           </DialogContent>
         </Dialog>
