@@ -13,18 +13,6 @@ import {
   Typography
 } from '@material-ui/core'
 import ScrollablePaper from '../components/ScrollablePaper'
-import green from '@material-ui/core/colors/green'
-import red from '@material-ui/core/colors/red'
-
-const Delta = ({ delta }) => (
-  <small
-    style={{
-      color: delta < 0 ? red[500] : green[500]
-    }}
-  >
-    {`( ${delta > 0 ? '+' : ''}${delta | 0} )`}
-  </small>
-)
 
 const Leaderboard = () => {
   const [users, loading] = useCollectionData(
@@ -68,7 +56,6 @@ const Leaderboard = () => {
                 <Typography variant="h6" color="textPrimary">
                   {parseInt(user.rank)}
                 </Typography>
-                <Delta delta={user.delta} />
               </div>
             </ListItem>
           ))}
