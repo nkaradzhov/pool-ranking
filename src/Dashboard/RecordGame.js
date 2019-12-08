@@ -19,6 +19,7 @@ import {
 
 import styled from 'styled-components'
 import Header from '../components/Header'
+import ScrollablePaper from '../components/ScrollablePaper'
 
 const DialogContent = styled.div`
   height: 150px;
@@ -94,23 +95,25 @@ const RecordGame = () => {
         title="Record"
         left={() => <ArrowBack onClick={() => history.goBack()} />}
       />
-      <List style={{ overflow: 'scroll' }}>
-        {users
-          .filter(u => u.uid !== authUser.uid)
-          .map(user => (
-            <ListItem
-              divider
-              key={user.uid}
-              selected={oponent && oponent.uid === user.uid}
-              onClick={() => setOponent(user)}
-            >
-              <ListItemAvatar>
-                <Avatar src={user.photoUrl} />
-              </ListItemAvatar>
-              <ListItemText primary={<strong>{user.displayName}</strong>} />
-            </ListItem>
-          ))}
-      </List>
+      <ScrollablePaper>
+        <List>
+          {users
+            .filter(u => u.uid !== authUser.uid)
+            .map(user => (
+              <ListItem
+                divider
+                key={user.uid}
+                selected={oponent && oponent.uid === user.uid}
+                onClick={() => setOponent(user)}
+              >
+                <ListItemAvatar>
+                  <Avatar src={user.photoUrl} />
+                </ListItemAvatar>
+                <ListItemText primary={<strong>{user.displayName}</strong>} />
+              </ListItem>
+            ))}
+        </List>
+      </ScrollablePaper>
       {oponent && (
         <Dialog open={!!oponent} onClose={() => setOponent(null)}>
           <DialogHeader>
