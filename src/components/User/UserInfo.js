@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import FitText from 'react-fittext'
-import { grey, lime, indigo } from '@material-ui/core/colors'
+import { grey } from '@material-ui/core/colors'
 import GamePoints from './GamePoints'
 
 const border = `2px solid ${grey[200]}`

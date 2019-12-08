@@ -5,13 +5,7 @@ import Loader from './components/Loading'
 import Header from './components/Header'
 import ScrollablePaper from './components/ScrollablePaper'
 import Moment from 'react-moment'
-import {
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Typography
-} from '@material-ui/core'
+import { List, ListItem, ListItemText } from '@material-ui/core'
 
 const GameHistory = () => {
   const [yesterday] = useState(Date.now() - 5 * 24 * 60 * 60 * 1000)

@@ -101,7 +101,7 @@ const RecordGame = () => {
             <ListItem
               divider
               key={user.uid}
-              selected={oponent && oponent.uid == user.uid}
+              selected={oponent && oponent.uid === user.uid}
               onClick={() => setOponent(user)}
             >
               <ListItemAvatar>
