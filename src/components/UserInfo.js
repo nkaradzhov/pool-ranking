@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import FitText from 'react-fittext'
 import { grey } from '@material-ui/core/colors'
 import GamePoints from './GamePoints'
+import GamePointsSummary from './GamePointsSummary'
 
 const border = `2px solid ${grey[200]}`
 const titleColor = grey[700]
@@ -72,12 +73,17 @@ const Card = ({ flex = 1, compressor = 0.3, children, title }) => {
 
 const UserInfo = ({ info }) => (
   <Grid>
-    <Row>
+    <Row flex={2}>
       <Card flex={2} title="Rank">
         {parseInt(info.rank)}
       </Card>
-      <Card title="Last Game" compressor={0.2}>
+    </Row>
+    <Row>
+      <Card title="Last Game">
         <GamePoints points={info.delta} />
+      </Card>
+      <Card title="Last Week">
+        <GamePointsSummary name={info.displayName} />
       </Card>
     </Row>
     <Row>
