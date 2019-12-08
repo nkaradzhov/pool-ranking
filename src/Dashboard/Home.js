@@ -4,7 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import Loading from '../components/Loading'
 import { Button, Avatar } from '@material-ui/core'
-import UserInfo from '../components/User/UserInfo'
+import UserInfo from '../components/UserInfo'
 import styled from 'styled-components'
 import Header from '../components/Header'
 

@@ -4,10 +4,10 @@ import { red, green } from '@material-ui/core/colors'
 const GamePoints = ({ points }) => {
   const [sign, color] = points > 0 ? ['+', green[500]] : ['-', red[500]]
   return (
-    <div style={{ color: color }}>
+    <span style={{ color: color }}>
       {sign}
       {Math.abs(parseInt(points))}
-    </div>
+    </span>
   )
 }
 
