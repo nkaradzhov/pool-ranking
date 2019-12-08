@@ -10,6 +10,7 @@ const Middle = styled.div`
   display: flex;
   flex: 4;
   justify-content: center;
+  align-items: center;
 `
 const Right = styled.div`
   flex: 1;
@@ -20,7 +21,9 @@ const Header = ({ left, title, right }) => {
     <AppBar position="static">
       <Toolbar>
         <Left>{left && left()}</Left>
-        <Middle>{title}</Middle>
+        <Middle>
+          {title && typeof title === 'function' ? title() : title}
+        </Middle>
         <Right>{right && right()}</Right>
       </Toolbar>
     </AppBar>

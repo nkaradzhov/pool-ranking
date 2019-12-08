@@ -3,11 +3,12 @@ import { useParams } from 'react-router-dom'
 import Loading from '../components/Loading'
 import { useDocumentDataOnce } from 'react-firebase-hooks/firestore'
 import { firestore } from 'firebase'
-import UserInfo from '../components/UserInfo'
+import UserInfo from '../components/User/UserInfo'
 import styled from 'styled-components'
 import ArrowBack from '@material-ui/icons/ArrowBack'
 import { useHistory } from 'react-router-dom'
 import Header from '../components/Header'
+import { Avatar } from '@material-ui/core'
 
 const Page = styled.div`
   display: flex;
@@ -30,7 +31,12 @@ const Profile = () => {
     <React.Fragment>
       <Header
         left={() => <ArrowBack onClick={() => history.goBack()} />}
-        title={user.displayName}
+        title={() => (
+          <React.Fragment>
+            <Avatar src={user.photoUrl} style={{ marginRight: '.6em' }} />
+            {user.displayName}
+          </React.Fragment>
+        )}
       />
       <Page>
         <UserInfo info={user} />

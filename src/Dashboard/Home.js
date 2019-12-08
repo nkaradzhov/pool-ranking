@@ -3,8 +3,8 @@ import { auth, firestore } from 'firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import Loading from '../components/Loading'
-import { Button } from '@material-ui/core'
-import UserInfo from '../components/UserInfo'
+import { Button, Avatar } from '@material-ui/core'
+import UserInfo from '../components/User/UserInfo'
 import styled from 'styled-components'
 import Header from '../components/Header'
 
@@ -40,7 +40,18 @@ const Home = () => {
   if (loading) return <Loading />
   return (
     <React.Fragment>
-      <Header title={userInfo ? userInfo.displayName : ''} />
+      <Header
+        title={
+          userInfo ? (
+            <React.Fragment>
+              <Avatar src={userInfo.photoUrl} style={{ marginRight: '.6em' }} />
+              {user.displayName}
+            </React.Fragment>
+          ) : (
+            ''
+          )
+        }
+      />
       <Page>
         {!userInfo && (
           <React.Fragment>
