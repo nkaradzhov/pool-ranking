@@ -5,13 +5,13 @@ import Loader from './components/Loading'
 import Header from './components/Header'
 import ScrollablePaper from './components/ScrollablePaper'
 import Moment from 'react-moment'
-import { List, ListItem, ListItemText, Button, Switch } from '@material-ui/core'
+import { List, ListItem, ListItemText, Switch } from '@material-ui/core'
 import GamePoints from './components/GamePoints'
 import { useAuthState } from 'react-firebase-hooks/auth'
 
 const GameHistory = () => {
   const [user] = useAuthState(auth())
-  const [yesterday] = useState(Date.now() - 5 * 24 * 60 * 60 * 1000)
+  const [yesterday] = useState(Date.now() - 7 * 24 * 60 * 60 * 1000)
   const [games, loading] = useCollectionData(
     firestore()
       .collection('games')
