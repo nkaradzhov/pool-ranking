@@ -16,8 +16,12 @@ import GameHistory from './GameHistory'
 import Auth from './Authentication/Auth'
 import Navigation from './components/Navigation'
 import styled from 'styled-components'
+//admin + debug stuff
+import './util/recalculateState'
 
 const firebaseApp = app.initializeApp(config)
+
+//admin + debug stuff
 window.store = firebaseApp.firestore()
 
 const Root = styled.div`
