@@ -11,7 +11,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 
 const GameHistory = () => {
   const [user] = useAuthState(auth())
-  const [yesterday] = useState(Date.now() - 7 * 24 * 60 * 60 * 1000)
+  const [yesterday] = useState(Date.now() - 3 * 24 * 60 * 60 * 1000)
   const [games, loading] = useCollectionData(
     firestore()
       .collection('games')
