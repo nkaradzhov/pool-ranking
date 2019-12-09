@@ -81,6 +81,7 @@ const RecordGame = () => {
       .add({
         winner: winner.displayName,
         looser: looser.displayName,
+        points: newWinnerRank - winner.rank,
         date: Date.now()
       })
 
