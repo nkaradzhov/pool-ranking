@@ -6,8 +6,14 @@ import Header from './components/Header'
 import ScrollablePaper from './components/ScrollablePaper'
 import Moment from 'react-moment'
 import { List, ListItem, ListItemText, Switch } from '@material-ui/core'
-import GamePoints from './components/GamePoints'
+import GP from './components/GamePoints'
 import { useAuthState } from 'react-firebase-hooks/auth'
+
+const GamePoints = ({ ...rest }) => (
+  <strong>
+    <GP {...rest} />
+  </strong>
+)
 
 const GameHistory = () => {
   const [user] = useAuthState(auth())
@@ -45,27 +51,11 @@ const GameHistory = () => {
       />
       <ScrollablePaper>
         <List>
-          {filteredGames.map((game, i) => (
-            <ListItem divider key={i}>
-              <ListItemText
-                primary={
-                  <React.Fragment>
-                    <div>
-                      <strong>{game.winner}</strong>
-                      &nbsp;
-                      <GamePoints points={game.points} />
-                    </div>
-                    <div>
-                      <strong> {game.looser}</strong>
-                      &nbsp;
-                      <GamePoints points={-game.points} />
-                    </div>
-                  </React.Fragment>
-                }
-                secondary={<Moment fromNow>{game.date}</Moment>}
-              ></ListItemText>
-            </ListItem>
-          ))}
+          {filteredGames.map(
+            mine
+              ? renderMyHistoryItem(user.displayName)
+              : renderRegularHistoryItem
+          )}
         </List>
       </ScrollablePaper>
     </React.Fragment>
@@ -73,3 +63,50 @@ const GameHistory = () => {
 }
 
 export default GameHistory
+
+const renderMyHistoryItem = myName => (game, i) => {
+  const [won, gamePoints, vs] =
+    myName === game.winner
+      ? ['Won', game.points, game.looser]
+      : ['Lost', -game.points, game.winner]
+
+  return (
+    <ListItem divider key={i}>
+      <ListItemText
+        primary={
+          <React.Fragment>
+            <div>
+              {`${won} `}
+              <GamePoints hideSign points={gamePoints} />
+              {` against `}
+              <strong> {vs}</strong>
+            </div>
+          </React.Fragment>
+        }
+        secondary={<Moment fromNow>{game.date}</Moment>}
+      ></ListItemText>
+    </ListItem>
+  )
+}
+
+const renderRegularHistoryItem = (game, i) => (
+  <ListItem divider key={i}>
+    <ListItemText
+      primary={
+        <React.Fragment>
+          <div>
+            <strong>{game.winner}</strong>
+            &nbsp;
+            <GamePoints points={game.points} />
+          </div>
+          <div>
+            <strong> {game.looser}</strong>
+            &nbsp;
+            <GamePoints points={-game.points} />
+          </div>
+        </React.Fragment>
+      }
+      secondary={<Moment fromNow>{game.date}</Moment>}
+    ></ListItemText>
+  </ListItem>
+)
