@@ -13,38 +13,12 @@ import {
   Typography
 } from '@material-ui/core'
 import ScrollablePaper from '../components/ScrollablePaper'
-import { red, green } from '@material-ui/core/colors'
+import Ribbon from './Ribbon'
 
-import styled from 'styled-components'
-
-const RibbonRoot = styled.div`
-  height: 100%;
-  left: 0;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  width: 100%;
-`
-const RibbonContent = styled.span`
-  align-items: center;
-  color: white;
-  display: flex;
-  font-weight: bold;
-  justify-content: center;
-  left: -1.6em;
-  padding: 0.1em 1em;
-  position: absolute;
-  text-transform: uppercase;
-  top: 0.5em;
-  transform: rotate(-45deg);
-  width: 4em;
-  z-index: 99;
-`
-const Ribbon = ({ text, ...rest }) => (
-  <RibbonRoot>
-    <RibbonContent {...rest}>{text}</RibbonContent>
-  </RibbonRoot>
-)
+const tryPutRibbon = position => {
+  const type = ['gold', 'silver', 'bronze'][position]
+  return type ? <Ribbon type={type} /> : null
+}
 
 const Leaderboard = () => {
   const [users, loading] = useCollectionData(
@@ -67,12 +41,7 @@ const Leaderboard = () => {
               key={user.uid}
               onClick={() => history.push(`/profile/${user.uid}`)}
             >
-              {i === 0 && (
-                <Ribbon text="top 1" style={{ backgroundColor: red[500] }} />
-              )}
-              {i < 3 && i > 0 && (
-                <Ribbon text="top 3" style={{ backgroundColor: green[500] }} />
-              )}
+              {tryPutRibbon(i)}
               <ListItemAvatar>
                 <Avatar src={user.photoUrl} />
               </ListItemAvatar>
