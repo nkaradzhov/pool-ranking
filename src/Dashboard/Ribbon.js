@@ -27,18 +27,26 @@ const RibbonContent = styled.span`
 `
 
 const Ribbon = ({ type }) => {
-  const [text, color] = {
-    // gold: ['#1', 'linear-gradient(162deg, #d8b74a 40% , #D4AF37 40%)'],
-    gold: ['#1', '#d4af37'],
-    silver: ['#2', '#aaa9ad'],
-    bronze: ['#3', '#cd7f32']
+  const [text, background] = {
+    gold: [
+      '#1',
+      'radial-gradient( circle farthest-corner at 10% 20%, rgba(228,118,0,1) 0%, rgba(247,189,2,1) 90% )'
+    ],
+    silver: [
+      '#2',
+      'radial-gradient( circle farthest-corner at 10% 20%,  rgba(126,70,195,1) 0%, rgba(156,236,247,1) 90% )'
+    ],
+    bronze: [
+      '#3',
+      'radial-gradient( circle 808px at 15.8% 37%,  rgba(234,178,93,1) 0%, rgba(40,39,39,1) 50.7% )'
+    ]
   }[type]
 
   return (
     <RibbonRoot>
       <RibbonContent
         style={{
-          backgroundColor: color
+          background
         }}
       >
         {text}
