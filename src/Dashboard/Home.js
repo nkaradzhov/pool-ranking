@@ -1,12 +1,12 @@
 import React from 'react'
 import { auth, firestore } from 'firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { useDocumentData } from 'react-firebase-hooks/firestore'
 import Loading from '../components/Loading'
 import { Button, Avatar } from '@material-ui/core'
 import UserInfo from '../components/UserInfo'
 import styled from 'styled-components'
 import Header from '../components/Header'
+import useDataListener from '../store/useDataListener'
 
 const Page = styled.div`
   display: flex;
@@ -18,9 +18,7 @@ const Page = styled.div`
 
 const Home = () => {
   const [user] = useAuthState(auth())
-  const [userInfo, loading] = useDocumentData(
-    firestore().doc(`users/${user.uid}`)
-  )
+  const userInfo = useDataListener(store => store.doc(`users/${user.uid}`))
 
   const enroll = () => {
     firestore()
@@ -37,7 +35,7 @@ const Home = () => {
         gamesWon: 0
       })
   }
-  if (loading) return <Loading />
+  if (!userInfo) return <Loading />
   return (
     <React.Fragment>
       <Header

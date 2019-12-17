@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { firestore, auth } from 'firebase'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { auth } from 'firebase'
 import Loader from './components/Loading'
 import Header from './components/Header'
 import ScrollablePaper from './components/ScrollablePaper'
@@ -8,6 +7,7 @@ import Moment from 'react-moment'
 import { List, ListItem, ListItemText, Switch } from '@material-ui/core'
 import GP from './components/GamePoints'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import useDataListener from './store/useDataListener'
 
 const GamePoints = ({ ...rest }) => (
   <strong>
@@ -15,11 +15,12 @@ const GamePoints = ({ ...rest }) => (
   </strong>
 )
 
+const yesterday = Date.now() - 3 * 24 * 60 * 60 * 1000
+
 const GameHistory = () => {
   const [user] = useAuthState(auth())
-  const [yesterday] = useState(Date.now() - 3 * 24 * 60 * 60 * 1000)
-  const [games, loading] = useCollectionData(
-    firestore()
+  const games = useDataListener(store =>
+    store
       .collection('games')
       .where('date', '>', yesterday)
       .orderBy('date', 'desc')
@@ -34,7 +35,7 @@ const GameHistory = () => {
       )
     : games
 
-  if (loading) return <Loader />
+  if (!games) return <Loader />
 
   return (
     <React.Fragment>

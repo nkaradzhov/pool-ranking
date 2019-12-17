@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { firestore, auth } from 'firebase'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Loader from '../components/Loading'
 import { calculateRankings } from '../util/elo'
@@ -16,6 +15,7 @@ import {
   Button,
   Divider
 } from '@material-ui/core'
+import useDataListener from '../store/useDataListener'
 
 import styled from 'styled-components'
 import Header from '../components/Header'
@@ -39,9 +39,7 @@ const DialogHeader = styled.div`
 
 const RecordGame = () => {
   const [authUser, loadingUser] = useAuthState(auth())
-  const [users, loadingUsers] = useCollectionData(
-    firestore().collection('users')
-  )
+  const users = useDataListener(store => store.collection('users'))
   const [oponent, setOponent] = useState(null)
   const history = useHistory()
 
@@ -88,7 +86,7 @@ const RecordGame = () => {
     setOponent(false)
   }
 
-  if (loadingUser || loadingUsers) return <Loader />
+  if (loadingUser || !users) return <Loader />
 
   return (
     <React.Fragment>

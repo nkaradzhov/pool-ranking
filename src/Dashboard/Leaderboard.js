@@ -1,6 +1,4 @@
 import React from 'react'
-import { firestore } from 'firebase'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useHistory } from 'react-router-dom'
 import Loader from '../components/Loading'
 import Avatar from '@material-ui/core/Avatar'
@@ -14,6 +12,7 @@ import {
 } from '@material-ui/core'
 import ScrollablePaper from '../components/ScrollablePaper'
 import Ribbon from './Ribbon'
+import useDataListener from '../store/useDataListener'
 
 const tryPutRibbon = position => {
   const type = ['gold', 'silver', 'bronze'][position]
@@ -21,14 +20,12 @@ const tryPutRibbon = position => {
 }
 
 const Leaderboard = () => {
-  const [users, loading] = useCollectionData(
-    firestore()
-      .collection('users')
-      .orderBy('rank', 'desc')
+  const users = useDataListener(store =>
+    store.collection('users').orderBy('rank', 'desc')
   )
   const history = useHistory()
 
-  if (loading) return <Loader />
+  if (!users) return <Loader />
 
   return (
     <React.Fragment>

@@ -22,7 +22,7 @@ import './util/recalculateState'
 const firebaseApp = app.initializeApp(config)
 
 //admin + debug stuff
-window.store = firebaseApp.firestore()
+window.firestore = firebaseApp.firestore()
 
 const Root = styled.div`
   display: flex;

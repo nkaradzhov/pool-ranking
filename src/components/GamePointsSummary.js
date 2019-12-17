@@ -1,17 +1,14 @@
 import React, { useState } from 'react'
-import { firestore } from 'firebase'
-import { useCollectionDataOnce } from 'react-firebase-hooks/firestore'
 import GamePoints from './GamePoints'
+import useDataListener from '../store/useDataListener'
 
+const week = Date.now() - 7 * 24 * 60 * 60 * 1000
 const GamePointsSummary = ({ name }) => {
-  const [week] = useState(Date.now() - 7 * 24 * 60 * 60 * 1000)
-  const [games, loading] = useCollectionDataOnce(
-    firestore()
-      .collection('games')
-      .where('date', '>', week)
+  const games = useDataListener(store =>
+    store.collection('games').where('date', '>', week)
   )
 
-  if (loading) return null
+  if (!games) return null
 
   const points = games.reduce((acc, game) => {
     if (game.winner === name) return acc + game.points
