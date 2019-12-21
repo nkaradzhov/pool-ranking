@@ -37,7 +37,7 @@ window.cachedStore = store
 export default store
 
 const hash = ref => {
-  if (ref.__proto__.constructor.name === 'Query') {
+  if (ref._query) {
     const parts = [ref._query.path.segments.join('/')]
 
     if (ref._query.filters.length)
