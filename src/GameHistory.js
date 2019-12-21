@@ -42,12 +42,9 @@ const GameHistory = () => {
       <Header
         title="Game History"
         right={() => (
-          <Switch
-            checked={mine}
-            onClick={() => {
-              setMine(!mine)
-            }}
-          />
+          <strong style={{ float: 'right' }} onClick={() => setMine(!mine)}>
+            {mine ? 'Mine' : 'All'}
+          </strong>
         )}
       />
       <ScrollablePaper>
