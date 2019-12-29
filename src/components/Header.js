@@ -10,7 +10,6 @@ const Root = styled(Toolbar)`
 const Left = styled.div`
   display: flex;
   flex: 1;
-  background: lime;
   justify-content: flex-start;
 `
 const Middle = styled.div`
