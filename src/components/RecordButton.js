@@ -8,6 +8,7 @@ import { useTransition, animated } from 'react-spring'
 const RecordButton = styled(animated(Fab))`
   position: absolute !important;
   bottom: 4.3rem !important;
+  right: 1.3rem !important;
 `
 const isBlackList = pathname => !['/leaderboard', '/history'].includes(pathname)
 
@@ -16,9 +17,9 @@ export default () => {
   const { pathname } = useLocation()
   const [toggle, set] = useState(false)
   const transitions = useTransition(toggle, null, {
-    from: { right: '-4em' },
-    enter: { right: '1.3em' },
-    leave: { right: '-4em' }
+    from: { x: 7 },
+    enter: { x: 0 },
+    leave: { x: 7 }
   })
   useEffect(() => {
     set(!isBlackList(pathname))
@@ -28,7 +29,9 @@ export default () => {
     item ? (
       <RecordButton
         key={key}
-        style={props}
+        style={{
+          transform: props.x.interpolate(x => `translate(${x}em)`)
+        }}
         onClick={() => history.push('/record')}
         color="primary"
       >
@@ -36,6 +39,4 @@ export default () => {
       </RecordButton>
     ) : null
   )
-
-  return <div>hi</div>
 }
