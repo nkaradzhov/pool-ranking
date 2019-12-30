@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import AddIcon from '@material-ui/icons/Add'
 import Fab from '@material-ui/core/Fab'
 import styled from 'styled-components'
-import { useTransition, animated } from 'react-spring'
+import { animated, useSpring } from 'react-spring'
 
 const RecordButton = styled(animated(Fab))`
   position: absolute !important;
@@ -15,28 +15,24 @@ const isBlackList = pathname => !['/leaderboard', '/history'].includes(pathname)
 export default () => {
   const history = useHistory()
   const { pathname } = useLocation()
-  const [toggle, set] = useState(false)
-  const transitions = useTransition(toggle, null, {
-    from: { x: 7 },
-    enter: { x: 0 },
-    leave: { x: 7 }
-  })
+  const [props, set] = useSpring(() => ({
+    val: 0,
+    config: { tension: 400, friction: 30 }
+  }))
   useEffect(() => {
-    set(!isBlackList(pathname))
-  }, [pathname])
+    set(isBlackList(pathname) ? { val: 0 } : { val: 1 })
+  }, [pathname, set])
 
-  return transitions.map(({ item, key, props }) =>
-    item ? (
-      <RecordButton
-        key={key}
-        style={{
-          transform: props.x.interpolate(x => `translate(${x}em)`)
-        }}
-        onClick={() => history.push('/record')}
-        color="primary"
-      >
-        <AddIcon />
-      </RecordButton>
-    ) : null
+  return (
+    <RecordButton
+      style={{
+        opacity: props.val.interpolate(val => val),
+        transform: props.val.interpolate(val => `scale(${val})`)
+      }}
+      onClick={() => history.push('/record')}
+      color="primary"
+    >
+      <AddIcon />
+    </RecordButton>
   )
 }
