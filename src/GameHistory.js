@@ -4,7 +4,7 @@ import Loader from './components/Loading'
 import Header from './components/Header'
 import ScrollablePaper from './components/ScrollablePaper'
 import Moment from 'react-moment'
-import { List, ListItem, ListItemText, Switch } from '@material-ui/core'
+import { List, ListItem, ListItemText } from '@material-ui/core'
 import GP from './components/GamePoints'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import useDataListener from './store/useDataListener'
@@ -22,7 +22,8 @@ const GameHistory = () => {
   const games = useDataListener(store =>
     store
       .collection('games')
-      .where('date', '>', yesterday)
+      // .where('date', '>', yesterday)
+      .limit(100)
       .orderBy('date', 'desc')
   )
 
