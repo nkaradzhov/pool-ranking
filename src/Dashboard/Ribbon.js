@@ -1,6 +1,6 @@
 import React from 'react'
-import { red, green } from '@material-ui/core/colors'
 import styled from 'styled-components'
+import { useSpring, animated } from 'react-spring'
 
 const RibbonRoot = styled.div`
   height: 100%;
@@ -10,7 +10,7 @@ const RibbonRoot = styled.div`
   top: 0;
   width: 100%;
 `
-const RibbonContent = styled.span`
+const RibbonContent = styled(animated.span)`
   align-items: center;
   color: white;
   display: flex;
@@ -21,12 +21,18 @@ const RibbonContent = styled.span`
   position: absolute;
   text-transform: uppercase;
   top: 0.5em;
-  transform: rotate(-45deg);
   width: 4em;
   z-index: 99;
 `
+// transform: rotate(-45deg
 
 const Ribbon = ({ type }) => {
+  const { val } = useSpring({
+    val: 1,
+    from: { val: 0 },
+    config: { clamp: true, tension: 400, friction: 30 }
+  })
+
   const [text, background] = {
     gold: [
       '#1',
@@ -46,7 +52,8 @@ const Ribbon = ({ type }) => {
     <RibbonRoot>
       <RibbonContent
         style={{
-          background
+          background,
+          transform: val.interpolate(v => `rotate(-45deg) scale(${v})`)
         }}
       >
         {text}
