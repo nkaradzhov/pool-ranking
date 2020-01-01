@@ -13,9 +13,6 @@ import {
 import ScrollablePaper from '../components/ScrollablePaper'
 import Ribbon from './Ribbon'
 import useDataListener from '../store/useDataListener'
-import { useTrail, animated } from 'react-spring'
-
-const AnimatedListItem = animated(ListItem)
 
 const tryPutRibbon = position => {
   const type = ['gold', 'silver', 'bronze'][position]
@@ -28,13 +25,6 @@ const Leaderboard = () => {
   )
   const history = useHistory()
 
-  const trail = useTrail(users && users.length, {
-    config: { mass: 5, tension: 3000, friction: 200 },
-    opacity: 1,
-    x: 0,
-    from: { x: 4, opacity: 0 }
-  })
-
   if (!users) return <Loader />
 
   return (
@@ -43,10 +33,7 @@ const Leaderboard = () => {
       <ScrollablePaper>
         <List>
           {users.map((user, i) => (
-            <AnimatedListItem
-              style={{
-                opacity: trail[i].opacity
-              }}
+            <ListItem
               divider
               key={user.uid}
               onClick={() => history.push(`/profile/${user.uid}`)}
@@ -69,16 +56,12 @@ const Leaderboard = () => {
                   </React.Fragment>
                 }
               ></ListItemText>
-              <animated.div
-                style={{
-                  transform: trail[i].x.interpolate(x => `translate(${x}em)`)
-                }}
-              >
+              <div>
                 <Typography variant="h6" color="textPrimary">
                   {parseInt(user.rank)}
                 </Typography>
-              </animated.div>
-            </AnimatedListItem>
+              </div>
+            </ListItem>
           ))}
         </List>
       </ScrollablePaper>
