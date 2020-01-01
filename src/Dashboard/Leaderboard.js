@@ -13,24 +13,28 @@ import {
 import ScrollablePaper from '../components/ScrollablePaper'
 import Ribbon from './Ribbon'
 import useDataListener from '../store/useDataListener'
+import useFadeIn, { animated } from '../hooks/useFadeIn'
 
 const tryPutRibbon = position => {
   const type = ['gold', 'silver', 'bronze'][position]
   return type ? <Ribbon type={type} /> : null
 }
 
+const Anim = animated(ScrollablePaper)
+
 const Leaderboard = () => {
   const users = useDataListener(store =>
     store.collection('users').orderBy('rank', 'desc')
   )
   const history = useHistory()
+  const style = useFadeIn()
 
   if (!users) return <Loader />
 
   return (
     <React.Fragment>
       <Header title="Leaderboard" />
-      <ScrollablePaper>
+      <Anim style={style}>
         <List>
           {users.map((user, i) => (
             <ListItem
@@ -64,7 +68,7 @@ const Leaderboard = () => {
             </ListItem>
           ))}
         </List>
-      </ScrollablePaper>
+      </Anim>
     </React.Fragment>
   )
 }

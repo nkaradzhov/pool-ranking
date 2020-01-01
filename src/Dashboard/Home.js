@@ -7,8 +7,9 @@ import UserInfo from '../components/UserInfo'
 import styled from 'styled-components'
 import Header from '../components/Header'
 import useDataListener from '../store/useDataListener'
+import useFadeIn, { animated } from '../hooks/useFadeIn'
 
-const Page = styled.div`
+const Page = styled(animated.div)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,6 +20,7 @@ const Page = styled.div`
 const Home = () => {
   const [user] = useAuthState(auth())
   const userInfo = useDataListener(store => store.doc(`users/${user.uid}`))
+  const style = useFadeIn()
 
   const enroll = () => {
     firestore()
@@ -50,7 +52,7 @@ const Home = () => {
           )
         }
       />
-      <Page>
+      <Page style={style}>
         {!userInfo && (
           <React.Fragment>
             <h1>Join our local pool league!</h1>
